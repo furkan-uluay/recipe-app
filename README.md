@@ -34,7 +34,7 @@ That's it! You have successfully built and run the Recipe App Rest API.
 
 1. Open Mendix Studio.
 2. **File** > **Import App Package**.
-3. Browse to the .mpk file.
+3. Browse to the `.mpk` file under `Recipe-Web-App-Mendix\packages`.
 4. Click **OK**.
 
 The Mendix project package will be imported into Mendix Studio.
