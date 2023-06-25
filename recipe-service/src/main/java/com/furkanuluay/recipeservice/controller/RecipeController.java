@@ -82,12 +82,14 @@ public class RecipeController {
   }
 
   @GetMapping("/categories")
-  public ResponseEntity<CategoryDto> getAllCategories() {
+  public ResponseEntity<List<CategoryDto>> getAllCategories() {
     List<String> categories = recipeService.getAllCategories();
     if (categories == null || categories.isEmpty()) {
       throw new CategoryNotFoundException();
     }
 
-    return ResponseEntity.ok(new CategoryDto(categories));
+    List<CategoryDto> categoryDtoList = categories.stream().map(CategoryDto::new).collect(Collectors.toList());
+
+    return ResponseEntity.ok(categoryDtoList);
   }
 }
