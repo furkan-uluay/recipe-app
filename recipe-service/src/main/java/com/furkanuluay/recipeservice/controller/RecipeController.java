@@ -48,6 +48,12 @@ public class RecipeController {
     return ResponseEntity.ok(recipeResponseDtosList);
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<RecipeResponseDto> getRecipeById(@PathVariable Long id) {
+    Recipe recipe = recipeService.getRecipeById(id);
+    return ResponseEntity.ok(recipeMapper.entityToDto(recipe));
+  }
+
   @GetMapping("/search")
   public ResponseEntity<List<RecipeResponseDto>> searchRecipes(
       @RequestParam(required = false) String category,
@@ -73,7 +79,8 @@ public class RecipeController {
   }
 
   @PostMapping
-  public ResponseEntity<RecipeResponseDto> createRecipe(@Valid @RequestBody RecipeRequestDto recipe) {
+  public ResponseEntity<RecipeResponseDto> createRecipe(
+      @Valid @RequestBody RecipeRequestDto recipe) {
     if (recipeService.isRecipeNameExists(recipe.getTitle())) {
       throw new RecipeAlreadyExistException();
     }
@@ -88,7 +95,8 @@ public class RecipeController {
       throw new CategoryNotFoundException();
     }
 
-    List<CategoryDto> categoryDtoList = categories.stream().map(CategoryDto::new).collect(Collectors.toList());
+    List<CategoryDto> categoryDtoList =
+        categories.stream().map(CategoryDto::new).collect(Collectors.toList());
 
     return ResponseEntity.ok(categoryDtoList);
   }

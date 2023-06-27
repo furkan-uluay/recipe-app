@@ -1,6 +1,7 @@
 package com.furkanuluay.recipeservice.service;
 
 import com.furkanuluay.recipeservice.domain.Recipe;
+import com.furkanuluay.recipeservice.exception.RecipeNotFoundException;
 import com.furkanuluay.recipeservice.repository.RecipeRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 /**
  * @author Furkan Uluay
  */
-
 @Service
 public class RecipeService {
 
@@ -41,5 +41,9 @@ public class RecipeService {
 
   public List<String> getAllCategories() {
     return recipeRepository.findAllCategories();
+  }
+
+  public Recipe getRecipeById(Long id) {
+    return recipeRepository.findById(id).orElseThrow(RecipeNotFoundException::new);
   }
 }
