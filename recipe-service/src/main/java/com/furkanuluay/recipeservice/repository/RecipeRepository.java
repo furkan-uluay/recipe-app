@@ -17,6 +17,4 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
   boolean existsByTitle(String title);
 
-  @Query("SELECT DISTINCT r.categories FROM Recipe r")
-  List<String> findAllCategories();
 }

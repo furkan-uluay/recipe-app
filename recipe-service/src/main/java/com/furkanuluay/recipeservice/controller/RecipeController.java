@@ -13,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author Furkan Uluay
- *     <p>RecipeController is the controller class for Recipe entity. It has 3 endpoints. 1. Get all
- *     recipes 2. Search recipes by category and search text by title 3. Create recipe
+  * RecipeController is the controller class for Recipe entity. It provides endpoints to retrieve, search, and create recipes.
  */
 @RestController
 @RequestMapping("/recipes")

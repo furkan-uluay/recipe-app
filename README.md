@@ -28,7 +28,7 @@ That's it! You have successfully built and run the Recipe App Rest API.
 
 ## Prerequisites
 
-* Mendix Studio installed
+* Mendix Studio 10 or higher
 
 ## Steps
 
