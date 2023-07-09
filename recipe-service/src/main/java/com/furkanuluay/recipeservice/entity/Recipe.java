@@ -1,4 +1,4 @@
-package com.furkanuluay.recipeservice.domain;
+package com.furkanuluay.recipeservice.entity;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import lombok.Setter;
 /**
  * @author Furkan Uluay
  */
-
 @Entity
 @Table(name = "recipe")
 @Getter
@@ -22,8 +21,12 @@ public class Recipe {
 
   private String title;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  private List<String> categories;
+  @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+        name = "recipe_category",
+        joinColumns = @JoinColumn(name = "recipe_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id"))
+  private List<Category> categories;
 
   private String yield;
 

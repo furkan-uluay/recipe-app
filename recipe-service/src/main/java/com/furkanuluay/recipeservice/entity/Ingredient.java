@@ -1,4 +1,4 @@
-package com.furkanuluay.recipeservice.domain;
+package com.furkanuluay.recipeservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

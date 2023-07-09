@@ -100,6 +100,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<APIErrorDto> handleException(Exception ex, HttpServletRequest request) {
     log.error("Exception: {} for {}", ex.getLocalizedMessage(), request.getRequestURI());
+    ex.printStackTrace();
 
     APIErrorDto errorDto =
         APIErrorDto.builder()

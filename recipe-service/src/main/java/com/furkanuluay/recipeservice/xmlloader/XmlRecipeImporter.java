@@ -1,7 +1,8 @@
 package com.furkanuluay.recipeservice.xmlloader;
 
-import com.furkanuluay.recipeservice.domain.Ingredient;
-import com.furkanuluay.recipeservice.domain.Recipe;
+import com.furkanuluay.recipeservice.entity.Category;
+import com.furkanuluay.recipeservice.entity.Ingredient;
+import com.furkanuluay.recipeservice.entity.Recipe;
 import com.furkanuluay.recipeservice.service.RecipeService;
 import com.furkanuluay.recipeservice.xmlloader.xmlentity.RecipeData;
 import com.furkanuluay.recipeservice.xmlloader.xmlentity.RecipeXML;
@@ -26,7 +27,6 @@ import org.springframework.stereotype.Component;
 /**
  * @author Furkan Uluay
  */
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -43,6 +43,7 @@ public class XmlRecipeImporter {
       xmlDataList.forEach(this::importRecipeFromXml);
     } catch (Exception e) {
       log.error("Error importing recipes from XML files: {}", e.getMessage());
+      e.printStackTrace();
     }
   }
 
@@ -65,7 +66,15 @@ public class XmlRecipeImporter {
     RecipeData recipeData = recipeXML.getRecipeData();
     Recipe recipe = new Recipe();
     recipe.setTitle(recipeData.getHead().getTitle());
-    recipe.setCategories(recipeData.getHead().getCategories().getCategoryList());
+    recipe.setCategories(
+        recipeData.getHead().getCategories().getCategoryList().stream()
+            .map(
+                category -> {
+                  Category categoryDomain = new Category();
+                  categoryDomain.setName(category);
+                  return categoryDomain;
+                })
+            .collect(Collectors.toList()));
 
     List<Ingredient> ingredients =
         recipeData.getIngredients().getIng().stream()

@@ -1,49 +1,57 @@
 package com.furkanuluay.recipeservice.service;
 
-import com.furkanuluay.recipeservice.domain.Recipe;
+import com.furkanuluay.recipeservice.entity.Category;
+import com.furkanuluay.recipeservice.entity.Recipe;
+import com.furkanuluay.recipeservice.exception.RecipeAlreadyExistException;
 import com.furkanuluay.recipeservice.exception.RecipeNotFoundException;
 import com.furkanuluay.recipeservice.repository.RecipeRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
  * @author Furkan Uluay
  */
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
 
-  @Autowired private RecipeRepository recipeRepository;
+  private final RecipeRepository recipeRepository;
+  private final CategoryService categoryService;
 
   public List<Recipe> getAllRecipes() {
     return recipeRepository.findAll();
   }
 
-  public List<Recipe> findByCategoryAndSearch(String category, String search) {
-    return recipeRepository.findByCategoriesContainingAndTitleContaining(category, search);
-  }
-
   public List<Recipe> findByCategory(String category) {
-    return recipeRepository.findByCategoriesContaining(category);
+
+    List<Category> categories = categoryService.findByNameContainingIgnoreCase(category);
+    return categories.stream()
+        .map(Category::getRecipe)
+        .flatMap(List::stream)
+        .collect(Collectors.toList());
   }
 
-  public List<Recipe> findBySearch(String search) {
-    return recipeRepository.findByTitleContaining(search);
+  public List<Recipe> findByTitle(String title) {
+    return recipeRepository.findByTitleContainingIgnoreCase(title);
   }
 
   public boolean isRecipeNameExists(String name) {
     return recipeRepository.existsByTitle(name);
   }
 
+  @Transactional
   public Recipe createRecipe(Recipe recipe) {
+    if (isRecipeNameExists(recipe.getTitle())) {
+      throw new RecipeAlreadyExistException();
+    }
     return recipeRepository.save(recipe);
   }
 
-  public List<String> getAllCategories() {
-    return recipeRepository.findAllCategories();
-  }
-
   public Recipe getRecipeById(Long id) {
-    return recipeRepository.findById(id).orElseThrow(RecipeNotFoundException::new);
+    Recipe recipe = recipeRepository.findById(id).orElseThrow(RecipeNotFoundException::new);
+    return recipe;
   }
 }

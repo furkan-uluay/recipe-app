@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecipeResponseDto {
+public class RecipeDto {
   private Long id;
   private String title;
-  private List<String> categories;
+  private List<CategoryDto> categories;
   private String yield;
   private List<IngredientDto> ingredients;
   private String directions;
