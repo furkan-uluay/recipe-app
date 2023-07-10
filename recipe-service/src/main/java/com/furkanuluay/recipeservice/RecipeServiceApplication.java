@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author Furkan Uluay
  */
 
-@EntityScan("com.furkanuluay.recipeservice.domain")
+@EntityScan("com.furkanuluay.recipeservice.entity")
 @EnableJpaRepositories("com.furkanuluay.recipeservice.repository")
 @EnableTransactionManagement
 @SpringBootApplication
